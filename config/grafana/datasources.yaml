@@ -1,0 +1,10 @@
+---
+apiVersion: 1
+
+datasources:
+  - name: Phlare
+    type: phlare
+
+    version: 1
+    url: http://grafana-phlare:4100
+

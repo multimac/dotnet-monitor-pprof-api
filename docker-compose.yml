@@ -1,0 +1,41 @@
+version: '3.4'
+
+services:
+  dotnet-monitor-pprof-api:
+    image: dotnet-monitor-pprof-api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+
+    ports:
+      - 5063:5063
+
+    environment:
+      - Controller__DotnetMonitorUrl=http://host.docker.internal:52323?pid=[...]
+
+  grafana-phlare:
+    image: grafana/phlare:latest
+    command:
+      - --config.file=/etc/phlare/config.yaml
+    
+    ports:
+      - 4100:4100
+
+    volumes:
+      - type: bind
+        source: ./config/phlare/config.yaml
+        target: /etc/phlare/config.yaml
+
+  grafana:
+    image: grafana/grafana:main
+
+    environment:
+      - GF_FEATURE_TOGGLES_ENABLE=flameGraph
+
+    ports:
+      - 3000:3000
+
+    volumes:
+      - type: bind
+        source: ./config/grafana/datasources.yaml
+        target: /etc/grafana/provisioning/datasources/datasources.yaml
