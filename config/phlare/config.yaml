@@ -1,7 +1,12 @@
 # Do not use this configuration in production.
 # It is for demonstration purposes only.
 scrape_configs:
-  - job_name: "default"
+  - job_name: "self"
+    scrape_interval: "15s"
+    static_configs:
+      - targets: ["127.0.0.1:4100"]
+
+  - job_name: "dotnet-monitor-pprof-api"
     scrape_interval: "15s"
 
     static_configs:
